@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: ghostwhite;
+    }
+  
+    #quiz {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #66ebf0;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(198, 222, 60, 0.2);
+    }
+  
+    h1 {
+      text-align: center;
+      color: #333333;
+    }
+  
+    #question {
+      margin-bottom: 20px;
+    }
+  
+    #options {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .selected {
+      background-color: #8f8d8d;
+    }
+  
+    #submit {
+      background-color: #3db0ef;
+    }
+    
+    #clearResponse {
+      background-color: #ff7f7f;
+      margin-right: 10px;
+    }
+  
+    button {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      background-color: rgb(227, 238, 10);
+      color: #131313;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+    button:hover {
+      background-color: #8f8d8d;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz">
+    <h1>Interactive Quiz Game<br> By Kalyan</h1>
+    <div id="question"></div>
+    <div id="options"></div>
+    <button id="submit">Submit</button>
+    <button id="clearResponse">Clear Response</button>
+  </div>
+
+  <td><label>Autoproctor</label></td>
+  <a href="https://www.autoproctor.co/tests/start-test/eRzUdwnm5p"> Online Assesmemnt</a>
+
+  <script>
+    const quizData = [
+      {
+        question: "1. What is the capital of France?",
+        options: ["Paris", "Madrid", "Rome", "Berlin"],
+        answer: "Paris"
+      },
+      {
+        question: "2. What is the largest planet in our solar system?",
+        options: ["Mars", "Saturn", "Jupiter", "Earth"],
+        answer: "Jupiter"
+      },
+      {
+        question: "3. How many sizes of headers are available in HTML by default?",
+        options: ["5", "1", "3", "6"],
+        answer: "6"
+      },
+      {
+        question: "4. In how many ways can CSS be written in?",
+        options: ["1", "2", "3", "4"],
+        answer: "3"
+      },
+      {
+        question: "5. What is the smallest header in HTML by default?",
+        options: ["h1", "h2", "h4", "h6"],
+        answer: "h6"
+      }
+    ];
+    
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    const submitButton = document.getElementById("submit");
+    const clearResponseButton = document.getElementById("clearResponse");
+    
+    let currentQuestion = 0;
+    let score = 0;
+    
+    function showQuestion() {
+      const question = quizData[currentQuestion];
+      questionElement.innerText = question.question;
+    
+      optionsElement.innerHTML = "";
+      question.options.forEach(option => {
+        const button = document.createElement("button");
+        button.innerText = option;
+        optionsElement.appendChild(button);
+        button.addEventListener("click", () => selectAnswer(button));
+      });
+    }
+    
+    function selectAnswer(selectedButton) {
+      const answer = quizData[currentQuestion].answer;
+      const selectedOption = selectedButton.innerText;
+    
+      if (selectedOption === answer) {
+        score++;
+      }
+    
+      // Remove selected class from all options
+      const optionButtons = optionsElement.querySelectorAll('button');
+      optionButtons.forEach(button => button.classList.remove('selected'));
+    
+      // Add selected class to the clicked option
+      selectedButton.classList.add('selected');
+    }
+
+    function clearResponse() {
+      const selectedButton = optionsElement.querySelector('.selected');
+      if (selectedButton) {
+        selectedButton.classList.remove('selected');
+      }
+    }
+    
+    function showNextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+    
+    function showResult() {
+      quiz.innerHTML = `
+        <h1>Quiz Completed!</h1>
+        <p>Your score: ${score}/${quizData.length}</p>
+      `;
+    }
+    
+    submitButton.addEventListener("click", showNextQuestion);
+    clearResponseButton.addEventListener("click", clearResponse);
+    
+    showQuestion();
+  </script>
+</body>
+</html>
